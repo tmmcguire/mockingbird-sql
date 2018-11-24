@@ -2,4 +2,4 @@
 
 const baseSql = require('./base-sql');
 
-module.exports.MySql = baseSql.BaseSql;
+module.exports.MySql = new baseSql.BaseSql();

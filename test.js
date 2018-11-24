@@ -6,7 +6,7 @@ let aEq = assert.deepStrictEqual;
 
 const ms = require('./lib.js');
 
-const mysql = new ms.mysql.MySql();
+const mysql = ms.mysql.MySql;
 
 let stmt = new ms.Select();
 a(stmt instanceof ms.Statement);
