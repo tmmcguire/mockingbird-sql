@@ -46,9 +46,7 @@ as necessary.
 
 #### SELECT
 
-Constructor:
-
-    _module_.select(): _SELECT statement object_
+Constructor: _module_.select(): _SELECT statement object_
 
 Methods:
 
@@ -80,9 +78,7 @@ All methods return the *this* object, to allow chaining.
 
 #### UNION
 
-Constructor:
-
-    _module_.union(): _UNION statement object_
+Constructor: _module_.union(): _UNION statement object_
 
 Methods:
 
