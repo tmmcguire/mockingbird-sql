@@ -27,6 +27,10 @@ function LogicalOperator(operator, operands) {
   this.operands = Array.from(operands);
 }
 
+LogicalOperator.prototype.push = function(expression) {
+    this.operands.push(expression);
+};
+
 // --------------------------
 
 function NotOperator(expression) {
