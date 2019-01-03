@@ -126,9 +126,9 @@ BaseSql.prototype.whereToSql = function (stmt, opts) {
   if (!where) {
     return '';
   } else if (where instanceof sql.Expression) {
-    return `(WHERE ${ this.exprToSql(where, opts) })`;
+    return `WHERE (${ this.exprToSql(where, opts) })`;
   } else {
-    return `(WHERE ${ where })`;
+    return `WHERE (${ where })`;
   }
 };
 
