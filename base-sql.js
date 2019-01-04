@@ -71,11 +71,11 @@ BaseSql.prototype.selectToSql = function (stmt, opts) {
 
 // --------------------------
 
-BaseSql.prototype.distinctToSql = function (stmt, opts) {
+BaseSql.prototype.distinctToSql = function (stmt, _opts) {
   return stmt.properties.distinct ? 'DISTINCT' : '';
 };
 
-BaseSql.prototype.columnsToSql = function (stmt, opts) {
+BaseSql.prototype.columnsToSql = function (stmt, _opts) {
   let columns = stmt.properties.columns;
   if (!columns || columns.length === 0) { return '*' }
   return columns.map(([col, alias]) =>
@@ -132,7 +132,7 @@ BaseSql.prototype.whereToSql = function (stmt, opts) {
   }
 };
 
-BaseSql.prototype.groupByToSql = function (stmt, opts) {
+BaseSql.prototype.groupByToSql = function (stmt, _opts) {
   if (stmt.properties.groupBy) {
     return `GROUP BY ${ stmt.properties.groupBy.join(', ') }`;
   } else {
@@ -140,7 +140,7 @@ BaseSql.prototype.groupByToSql = function (stmt, opts) {
   }
 };
 
-BaseSql.prototype.orderByToSql = function (stmt, opts) {
+BaseSql.prototype.orderByToSql = function (stmt, _opts) {
   let orderBy = stmt.properties.orderBy;
   if (orderBy) {
     let order = orderBy.map(([col,ord]) => `${col} ${ord}`).join(', ');
@@ -180,8 +180,8 @@ BaseSql.prototype.unionToSql = function (stmt, opts) {
     this.orderByToSql(stmt, opts),
     this.windowToSql(stmt, opts),
   ]
-  .filter((clause) => clause && clause.length > 0)
-  .join(' ');
+    .filter((clause) => clause && clause.length > 0)
+    .join(' ');
   return {
     sql: statement,
     values: opts.values,

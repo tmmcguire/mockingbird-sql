@@ -28,7 +28,7 @@ function LogicalOperator(operator, operands) {
 }
 
 LogicalOperator.prototype.push = function(expression) {
-    this.operands.push(expression);
+  this.operands.push(expression);
 };
 
 // --------------------------
@@ -109,7 +109,7 @@ function _setInheritance(cnstr, proto) {
   UnaryOperator,
   BinaryOperator,
   CaseOperator,
-].forEach((ex) => { _setInheritance(ex, Expression.prototype); });
+].forEach((ex) => { _setInheritance(ex, Expression.prototype) });
 
 // --------------------------
 
@@ -135,7 +135,7 @@ module.exports.not = function (expr) { return new NotOperator(expr) };
   ['isNull',    UnaryOperator('IS NULL')],
   ['isNotNull', UnaryOperator('IS NOT NULL')],
 ].forEach(([name,fcn]) => {
-  module.exports[name] = function (column) { return new fcn(column); };
+  module.exports[name] = function (column) { return new fcn(column) };
 });
 
 [
