@@ -194,12 +194,12 @@ Select.prototype.window = function (offset, limit) {
 
 // ==========================
 
-function Union() {
+function Union(selects) {
   Statement.call(this);
-  if (arguments.length > 0) {
+  if (selects.length > 0) {
     this.selects = append(
       this.selects || [],
-      argsToAry(arguments)
+      argsToAry(selects)
     );
   }
 }
@@ -257,7 +257,7 @@ function _window(object, offset, limit) {
 // --------------------------
 
 function argsToAry(args) {
-  if (args.length === 1 && Array.isArray(args[0])) { 
+  if (args.length === 1 && Array.isArray(args[0])) {
     return args[0];
   } else {
     // let ary = [];

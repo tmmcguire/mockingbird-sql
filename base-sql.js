@@ -78,7 +78,7 @@ BaseSql.prototype.distinctToSql = function (stmt, opts) {
 BaseSql.prototype.columnsToSql = function (stmt, opts) {
   let columns = stmt.properties.columns;
   if (!columns || columns.length === 0) { return '*' }
-  return columns.map(([col, alias]) => 
+  return columns.map(([col, alias]) =>
     (alias) ? `${ col } AS ${ alias }` :  col
   ).join(', ');
 };
@@ -169,6 +169,23 @@ BaseSql.prototype.windowToSql = function (stmt, opts) {
 // ==========================
 
 BaseSql.prototype.unionToSql = function (stmt, opts) {
+  let statement = [
+    stmt.selects.map((select) => {
+      if (select instanceof sql.Select) {
+        return '(' + this.selectToSql(select, opts).sql + ')';
+      } else {
+        return '(' + select + ')';
+      }
+    }).join(' UNION '),
+    this.orderByToSql(stmt, opts),
+    this.windowToSql(stmt, opts),
+  ]
+  .filter((clause) => clause && clause.length > 0)
+  .join(' ');
+  return {
+    sql: statement,
+    values: opts.values,
+  };
 };
 
 // ==========================
@@ -221,7 +238,7 @@ BaseSql.prototype.caseExprToSql = function (expr, opts) {
   let elseExpr   = expr.default ? ` ELSE ${ this.exprToSql(expr.default, opts) }` : '';
 
   return `
-    (CASE ${ expression } 
+    (CASE ${ expression }
       ${ branches }
       ${ elseExpr }
     END)
