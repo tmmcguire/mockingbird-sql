@@ -75,12 +75,13 @@ BaseSql.prototype.distinctToSql = function (stmt, _opts) {
   return stmt.properties.distinct ? 'DISTINCT' : '';
 };
 
-BaseSql.prototype.columnsToSql = function (stmt, _opts) {
+BaseSql.prototype.columnsToSql = function (stmt, opts) {
   let columns = stmt.properties.columns;
   if (!columns || columns.length === 0) { return '*' }
-  return columns.map(([col, alias]) =>
-    (alias) ? `${ col } AS ${ alias }` :  col
-  ).join(', ');
+  return columns.map(([col, alias]) => {
+    let expr = (col instanceof ex.Expression) ? this.exprToSql(col, opts) : col;
+    return (alias) ? `${expr} AS ${alias}` : expr;
+  }).join(', ');
 };
 
 BaseSql.prototype.fromToSql = function (stmt, opts) {
