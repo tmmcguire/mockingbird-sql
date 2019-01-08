@@ -10,7 +10,8 @@
     "sql",
     "database",
     "query",
-    "builder"
+    "builder",
+    "MySQL"
   ],
   "author": "Tommy M. McGuire",
   "license": "GPL-3.0-or-later"
