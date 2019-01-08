@@ -23,8 +23,8 @@ let s = sql.select().columns([
     )
   ).orderBy('ColA');
 
-let mysql = sql.mysql.MySql;
-let query = mysql.toSql(s);
+let query = sql.mysql.MySql.toSql(s);
+
 // query.sql    => SQL statement
 // query.values => list of arguments
 ```
@@ -34,14 +34,14 @@ let query = mysql.toSql(s);
 This module exports several kinds of functions useful for building complex
 SQL queries programmatically.
 
-The major class are constructors for SQL statement objects. Another is functions 
+The major class are constructors for SQL statement objects. Another is functions
 for building SQL expressions. The third is classes for converting the statement
 objects into SQL suitable for passing to database drivers in order to execute
 the query.
 
 ### SQL Statement Objects
 
-Currently, two statements are supported: SELECT and UNION. Others can be added 
+Currently, two statements are supported: SELECT and UNION. Others can be added
 as necessary.
 
 #### SELECT
@@ -146,9 +146,17 @@ The Case object has a number of methods:
 
 ### Conversion
 
-This module is intended to support any (semi-) standardized SQL.
+This module is intended to support any (semi-) standardized SQL. Currently,
+it supports MySQL. The currently supported options are:
 
 #### MySQL
 
-    _module_.mysql.MySql.toSql( _statement_ )
+Conversion of a generated statement to MySQL is handled by the `mysql.MySQL`
+object. Methods on this object are:
 
+* mysql.MySQL.toSql( _statement_ )
+
+  This method returns an object containing two keys:
+
+  - sql: A string representation of the SQL query, with placeholders for parameters.
+  - values: A list of arguments for the query.
