@@ -84,6 +84,10 @@ BaseSql.prototype.columnsToSql = function (stmt, opts) {
   }).join(', ');
 };
 
+BaseSql.prototype.tableAliasToSql = function (table, alias) {
+  return `${table} AS ${alias}`;
+};
+
 BaseSql.prototype.fromToSql = function (stmt, opts) {
   let from   = stmt.properties.from || [];
   let result = [];
@@ -91,7 +95,7 @@ BaseSql.prototype.fromToSql = function (stmt, opts) {
     if (tbl instanceof sql.Statement) {
       tbl = `(${ this.toSql(tbl, opts).sql })`;
     }
-    result.push((alias) ? `${ tbl } AS ${ alias }` : tbl);
+    result.push((alias) ? this.tableAliasToSql(tbl, alias) : tbl);
   }
   return 'FROM ' + result.join(', ');
 };
@@ -114,7 +118,8 @@ BaseSql.prototype.joinToSql = function (stmt, opts) {
     }
 
     if (alias) {
-      result.push( `${ type } ${ table } AS ${ alias } ON (${ onExp })` );
+      let tableRef = this.tableAliasToSql(table, alias);
+      result.push( `${ type } ${ tableRef } ON (${ onExp })` );
     } else {
       result.push( `${ type } ${ table } ON (${ onExp })` );
     }
@@ -154,12 +159,10 @@ BaseSql.prototype.orderByToSql = function (stmt, _opts) {
 BaseSql.prototype.windowToSql = function (stmt, opts) {
   let limit = stmt.properties.limit;
   if (limit) {
-    opts.values.push(limit);
-    let s = 'LIMIT ?';
+    let s = 'LIMIT ' + this.parameterToSql(limit, opts);
     let offset = stmt.properties.offset;
     if (offset) {
-      opts.values.push(offset);
-      s += ' OFFSET ?';
+      s += ' OFFSET ' + this.parameterToSql(offset, opts);
     }
     return s;
   } else {
@@ -208,14 +211,11 @@ BaseSql.prototype.exprToSql = function (expr, opts) {
 
   } else if (expr instanceof ex.BinaryOperator) {
 
-    opts.values.push(expr.value);
-    return `${ expr.column } ${ expr.operator } ?`;
+    return `${ expr.column } ${ expr.operator } ${ this.parameterToSql(expr.value, opts) }`;
 
   } else if (expr instanceof ex.TrinaryOperator) {
 
-    opts.values.push(expr.left);
-    opts.values.push(expr.right);
-    return `${ expr.column } ${ expr.operator } ? ${ expr.separator } ?`;
+    return `${ expr.column } ${ expr.operator } ${ this.parameterToSql(expr.left, opts) } ${ expr.separator } ${ this.parameterToSql(expr.right, opts) }`;
 
   } else if (expr instanceof ex.CaseOperator) {
 
@@ -226,6 +226,11 @@ BaseSql.prototype.exprToSql = function (expr, opts) {
     return expr;
 
   }
+};
+
+BaseSql.prototype.parameterToSql = function (value, opts) {
+  opts.values.push(value);
+  return '?';
 };
 
 // --------------------------
