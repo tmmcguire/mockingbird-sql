@@ -1,6 +1,6 @@
 {
   "name": "mockingbird-sql",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "SQL statement builder",
   "main": "lib.js",
   "scripts": {
@@ -14,5 +14,5 @@
     "MySQL"
   ],
   "author": "Tommy M. McGuire",
-  "license": "GPL-3.0-or-later"
+  "license": "(GPL-3.0-or-later OR MIT)"
 }
