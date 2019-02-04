@@ -20,10 +20,12 @@
 
 const expressions = require('./expressions');
 const mysql       = require('./mysql');
+const oracle      = require('./oracle');
 
 Object.assign(module.exports, expressions);
 
-module.exports.mysql = mysql;
+module.exports.mysql  = mysql;
+module.exports.oracle = oracle;
 
 // ==========================
 

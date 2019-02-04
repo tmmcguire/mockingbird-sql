@@ -160,3 +160,8 @@ object. Methods on this object are:
 
   - sql: A string representation of the SQL query, with placeholders for parameters.
   - values: A list of arguments for the query.
+
+#### Oracle
+
+Conversion to Oracle SQL is handled by `oracle.Oracle` object. The methods are
+the same as MySQL above.
