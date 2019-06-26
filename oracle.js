@@ -46,7 +46,7 @@ OracleSql.prototype.selectToSql = function (stmt, opts = { values: [] }) {
   let limit = stmt.properties.limit;
   if (offset && limit) {
     let total = offset + limit;
-    sql = `SELECT * FROM (SELECT cinternal_query.*, ROWNUM rnum FROM (${sql}) cinternal_query WHERE ROWNUM <= (${total})) WHERE rnum >= ${offset}`;
+    sql = `SELECT * FROM (SELECT cinternal_query.*, ROWNUM rnum FROM (${sql}) cinternal_query) WHERE (rnum > ${offset}) AND (rnum <= (${total}))`;
   } else if (offset) {
     sql = `SELECT cinternal_query.* FROM (${sql}) cinternal_query WHERE ROWNUM >= ${offset}`;
   } else if (limit) {
